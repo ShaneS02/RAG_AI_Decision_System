@@ -1,0 +1,6 @@
+# Requirements for the project
+pypdf >= 4.0.0
+python-docx >= 1.2.0
+beautifulsoup4 >= 4.14.3
+requests >= 2.32.5
+pytest >= 9.0.2

@@ -1,0 +1,1 @@
+#test the dispatcher ( the extract function ) to ensure all file types are being routed correctly
