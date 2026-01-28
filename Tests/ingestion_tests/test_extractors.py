@@ -18,6 +18,7 @@ html_files = list(html_folder.glob("*.txt")) # Get all files with url links
 def test_extract_pdf_text(pdf_path): 
     extracted_text = extract_pdf_text(pdf_path)
     assert isinstance(extracted_text, str)
+    assert extracted_text != "\n"
     assert len(extracted_text.strip()) > 0  # Ensure some text was extracted
 
 #skip test if no docx files found
@@ -26,6 +27,7 @@ def test_extract_pdf_text(pdf_path):
 def test_extract_docx_text(docx_path): 
     extracted_text = extract_docx_text(docx_path)
     assert isinstance(extracted_text, str)
+    assert extracted_text != "\n"
     assert len(extracted_text.strip()) > 0  # Ensure some text was extracted
 
 #skip test if no html files found

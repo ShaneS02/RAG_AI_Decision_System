@@ -1,5 +1,5 @@
-from text_preprocessing import clean_extracted_text, normalize_document
-from dispatcher import extract
+from .text_preprocessing import clean_extracted_text, normalize_document
+from .dispatcher import extract
 
 
 #function to handle the complete ingestion process
