@@ -4,9 +4,9 @@ from Project.text_preprocessing import extract_html_text, extract_pdf_text, extr
 from pathlib import Path
 
 #folders containing test files
-pdf_folder = Path("Tests/files/pdfs")
-docx_folder = Path("Tests/files/docx")
-html_folder = Path("Tests/files/html")
+pdf_folder = Path("files/pdfs")
+docx_folder = Path("files/docx")
+html_folder = Path("files/html")
 
 pdf_files = list(pdf_folder.glob("*.pdf")) # Get all PDF files in the folder
 docx_files = list(docx_folder.glob("*.docx")) # Get all DOCX files in the folder
