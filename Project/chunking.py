@@ -53,7 +53,7 @@ def chunk_text(
         paragraph_token_count = count_tokens(paragraph) 
 
         #fallback for very large paragraphs
-        if paragraph_token_count > max_tokens or paragraph_token_count > target_tokens:
+        if paragraph_token_count > max_tokens:
             flush_chunk() # Finalize current chunk before handling large paragraph
 
             words = paragraph.split()

@@ -64,6 +64,7 @@ def test_overlap_between_chunks():
         text,
         simple_tokenizer,
         target_tokens=100,
+        max_tokens=150,
         overlap_tokens=10
     )
 
