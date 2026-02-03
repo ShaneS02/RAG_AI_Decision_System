@@ -85,6 +85,7 @@ def chunk_text(
 
     merged_chunks = [] 
     buffer = None #buffer represents the current chunk being built
+    chunk_id = 1
 
     for chunk in chunks:
         if chunk["token_count"] < min_tokens and buffer:
@@ -92,6 +93,8 @@ def chunk_text(
             buffer["token_count"] += chunk["token_count"]
         else:
             if buffer:
+                buffer["chunk_id"] = chunk_id
+                chunk_id += 1
                 merged_chunks.append(buffer) # Finalize and store the buffer chunk
             buffer = chunk 
     

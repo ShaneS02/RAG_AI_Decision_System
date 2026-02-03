@@ -9,8 +9,26 @@ def test_add_chunks_increases_index_and_metadata():
     vector_db = VectorDatabase(embedding_service)
 
     chunks = [
-        {"text": "cat", "document_id": "1", "source": "test", "metadata": {}},
-        {"text": "dog", "document_id": "2", "source": "test", "metadata": {}},
+        {
+            "text": "cat", 
+            "document_id": "1", 
+            "chunk_id": "1", 
+            "file_name": "test file", 
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
+        {
+            "text": "dog", 
+            "document_id": "2", 
+            "chunk_id": "2", 
+            "file_name": "test file",
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
     ]
 
     vector_db.add_chunks(chunks)
@@ -32,8 +50,26 @@ def test_semantic_search_returns_relevant_chunk():
     vector_db = VectorDatabase(embedding_service)
 
     chunks = [
-        {"text": "Cats are small animals", "document_id": "1", "source": "test", "metadata": {}},
-        {"text": "Dogs bark loudly",        "document_id": "2", "source": "test", "metadata": {}},
+        {
+            "text": "Cats are small animals", 
+            "document_id": "1", 
+            "chunk_id": "1",
+            "file_name": "test file",
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
+        {
+            "text": "Dogs bark loudly", 
+            "document_id": "2", 
+            "chunk_id": "2",  
+            "file_name": "test file",
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
     ]
 
     vector_db.add_chunks(chunks)
@@ -50,8 +86,26 @@ def test_results_sorted_by_similarity():
     vector_db = VectorDatabase(embedding_service)
 
     chunks = [
-        {"text": "machine learning models", "document_id": "1", "source": "test", "metadata": {}},
-        {"text": "neural networks",          "document_id": "2", "source": "test", "metadata": {}},
+        {
+            "text": "machine learning models", 
+            "document_id": "1", 
+            "chunk_id": "1", 
+            "file_name": "test file",
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
+        {
+            "text": "neural networks",
+            "document_id": "2", 
+            "chunk_id": "2", 
+            "file_name": "test file",
+            "source": "test", 
+            "metadata": {}, 
+            "citation": "test", 
+            "created_at": "2026-02-02T22:17:45.123456+00:00"
+        },
     ]
 
     vector_db.add_chunks(chunks)

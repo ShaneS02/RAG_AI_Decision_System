@@ -9,9 +9,9 @@ from Project.text_preprocessing import clean_extracted_text
 
 
 # tests folders
-pdf_folder = Path("files/pdfs")
-docx_folder = Path("files/docx")
-html_folder = Path("files/html")
+pdf_folder = Path("Tests/ingestion_tests/files/pdfs")
+docx_folder = Path("Tests/ingestion_tests/files/docx")
+html_folder = Path("Tests/ingestion_tests/files/html")
 
 pdf_files = list(pdf_folder.glob("*.pdf")) # Get all PDF files in the folder
 docx_files = list(docx_folder.glob("*.docx")) # Get all DOCX files in the folder
@@ -20,7 +20,7 @@ for f in html_folder.glob("*.txt"):
     # read each line in the txt file and strip whitespace
     html_urls.extend([line.strip() for line in f.read_text().splitlines() if line.strip()])
 
-# 3️⃣ Combine into one list
+#Combine into one list
 files = pdf_files + docx_files + html_urls
 
 # Skip tests if no files found

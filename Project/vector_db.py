@@ -2,6 +2,7 @@ import faiss
 import numpy as np
 
 from typing import Dict, List
+from .chunk_validator import Chunk
 
 class VectorDatabase:
     def __init__(self, embedding_service):
@@ -11,55 +12,42 @@ class VectorDatabase:
         self.metadata = []  # list of dicts corresponding to each vector
     
     #ensure chunks are properly formatted and consists of the required keys
-    def _validate_chunk(self, chunk: Dict):
-        # Required keys
-        required_keys = ["document_id", "text", "source", "metadata"]
+    def _validate_chunk(self, formatted):
+        try:
+            Chunk(**formatted) #validate proper chunk formatting
+        except Exception as e:
+            raise ValueError(f"Chunk validation failed: {e}")
+            
         
-        # Check all keys exist
-        for key in required_keys:
-            if key not in chunk:
-                return False
-        
-        # Check types
-        if not isinstance(chunk["document_id"], str):
-            return False
-        if not isinstance(chunk["text"], str) or not chunk["text"].strip():
-            return False
-        if not isinstance(chunk["source"], str) and chunk["source"] is not None:
-            return False
-        if not isinstance(chunk["metadata"], dict):
-            return False
-
-        return True
-    
     #properly format chunks
     def prepare_chunks(self, document: Dict, chunks: List):
         prepared_chunks = []
 
         for chunk in chunks:
             # Store chunk with metadata
-            formatted = ({
+            formatted = {
                 "document_id": document["id"],
+                "chunk_id": chunk["chunk_id"],
                 "text": chunk["text"],
+                "file_name": document["file_name"], 
                 "source": document["source"],
-                "metadata": document["metadata"]
-            })
+                "metadata": document["metadata"],
+                "created_at": document["ingested_at"],
+                "citation": f"{document["file_name"]}#chunk{chunk["chunk_id"]}"
+            }
 
-            #check for malformed chunks
-            if not self._validate_chunk(formatted):
-                raise ValueError(f"Chunk is invalid: {formatted}")
+            #raises an exception if format is incorrect
+            self._validate_chunk(formatted)
             
+            #if valid, append
             prepared_chunks.append(formatted)
             
         return prepared_chunks
 
     # Add chunks to the FAISS index
     def add_chunks(self, chunks : List[Dict]):
-
-        #check if chunk is properly formatted
         for chunk in chunks:
-            if not self._validate_chunk(chunk):
-                raise ValueError(f"Invalid chunk: {chunk}")
+            self._validate_chunk(chunk) #raises an exception if format is incorrect
 
         texts = [chunk["text"] for chunk in chunks]
         embeddings = self.embedding_service.embed_batch(texts)

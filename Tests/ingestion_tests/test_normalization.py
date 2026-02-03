@@ -8,9 +8,9 @@ from pathlib import Path
 from datetime import datetime
 
 # tests folders
-pdf_folder = Path("files/pdfs")
-docx_folder = Path("files/docx")
-html_folder = Path("files/html")
+pdf_folder = Path("Tests/ingestion_tests/files/pdfs")
+docx_folder = Path("Tests/ingestion_tests/files/docx")
+html_folder = Path("Tests/ingestion_tests/files/html")
 
 pdf_files = list(pdf_folder.glob("*.pdf")) # Get all PDF files in the folder
 docx_files = list(docx_folder.glob("*.docx")) # Get all DOCX files in the folder
@@ -40,6 +40,7 @@ def test_normalize_document_schema(extracted_text):
     assert set(result.keys()) == {
         "id",
         "text",
+        "file_name",
         "source",
         "metadata",
         "ingested_at"
@@ -49,14 +50,13 @@ def test_normalize_document_schema(extracted_text):
 def test_normalize_document_insertions(extracted_text):
     result = extracted_text
     assert result["text"] != ""
+    assert result["file_name"] != ""
     assert result["source"] == "html" or "pdf" or "docx"
 
 
 def test_normalize_document_generates_uuid(extracted_text):
     result = extracted_text
     uuid.UUID(result["id"]) 
-
-
 
 def test_normalize_document_ingested_at_isoformat(extracted_text):
     result = extracted_text

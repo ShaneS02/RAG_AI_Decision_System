@@ -65,6 +65,7 @@ def normalize_document(extracted):
     return { 
         "id": str(uuid.uuid4()), # Unique identifier for the document
         "text": extracted["text"].strip(), # Cleaned and normalized text content
+        "file_name": extracted["metadata"]["file_name"], #human readable file name
         "source": extracted["metadata"]["source_type"], # Original source of the document
         "metadata": extracted["metadata"], # Additional metadata associated with the document
         "ingested_at": datetime.now(timezone.utc).isoformat() # Timestamp of ingestion in ISO 8601 format
