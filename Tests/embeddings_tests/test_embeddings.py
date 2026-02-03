@@ -1,7 +1,7 @@
 import os
 os.environ['HF_HUB_DISABLE_SYMLINKS_WARNING'] = '1' # Disable symlink warnings for Hugging Face Hub
 
-from Project.embeddings import EmbeddingService
+from Project.llm.embeddings import EmbeddingService
 import pytest
 import numpy as np
 

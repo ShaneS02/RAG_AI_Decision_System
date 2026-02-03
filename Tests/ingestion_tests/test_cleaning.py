@@ -4,8 +4,8 @@ import pytest
 import re
 
 from pathlib import Path
-from Project.dispatcher import extract
-from Project.text_preprocessing import clean_extracted_text
+from Project.ingestion.dispatcher import extract
+from Project.ingestion.text_preprocessing import clean_extracted_text
 
 
 # tests folders

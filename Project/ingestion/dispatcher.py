@@ -2,7 +2,7 @@ from docx import Document
 from urllib.parse import urlparse  # For URL parsing
 from pathlib import Path
 from .text_preprocessing import extract_html_text, extract_pdf_text, extract_docx_text
-from .custom_exceptions import UnsupportedFileTypeError
+from Project.utils.custom_exceptions import UnsupportedFileTypeError
 
 SUPPORTED_EXTENSIONS = {
     ".pdf": "pdf",

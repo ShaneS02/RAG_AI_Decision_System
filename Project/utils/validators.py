@@ -1,6 +1,11 @@
 from datetime import datetime
 from pydantic import BaseModel, Field, field_validator
-from typing import Dict, Optional
+from typing import Dict
+
+# ==================================
+# Vector Database Schema for Chunks
+# ==================================
+
 
 class Chunk(BaseModel):
     document_id: str
@@ -16,3 +21,4 @@ class Chunk(BaseModel):
     def not_empty(value, info):
         if not value or not str(value).strip():
             raise ValueError(f"{info.field.name} cannot be empty")
+        
