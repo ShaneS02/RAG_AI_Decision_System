@@ -9,3 +9,9 @@ class EmbeddingModel(ABC):
     @abstractmethod
     def embed_batch(self, texts: List[str]) -> List[List[float]]:
         pass
+
+
+class GenerationModel(ABC):
+    @abstractmethod
+    def generate(self, prompt: str) -> str:
+        pass
