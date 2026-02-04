@@ -1,5 +1,5 @@
-from Project.database.vector_db import VectorDatabase
-from Project.llm.embeddings import EmbeddingService
+from Project.rag.database.vector_db import VectorDatabase
+from Project.rag.llm.embeddings import EmbeddingService
 
 import pytest
 

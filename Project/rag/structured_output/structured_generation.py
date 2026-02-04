@@ -1,5 +1,5 @@
 from typing import List
-from Project.utils.validators import StructuredResponse
+from Project.rag.utils.validators import StructuredResponse
 
 import json
 

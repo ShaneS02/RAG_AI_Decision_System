@@ -1,6 +1,6 @@
 #tests if the extractors are working properly and text is being extracted as expected
 import pytest
-from Project.ingestion.text_preprocessing import extract_html_text, extract_pdf_text, extract_docx_text
+from Project.rag.ingestion.text_preprocessing import extract_html_text, extract_pdf_text, extract_docx_text
 from pathlib import Path
 
 #folders containing test files

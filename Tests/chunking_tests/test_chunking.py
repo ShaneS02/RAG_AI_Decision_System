@@ -1,6 +1,6 @@
 # Tests for chunking functionality
 
-from Project.chunking.chunking import chunk_text  # Assuming the chunking function is in chunking_module.py
+from Project.rag.chunking.chunking import chunk_text  # Assuming the chunking function is in chunking_module.py
 
 def simple_tokenizer(text: str):
     return text.split()

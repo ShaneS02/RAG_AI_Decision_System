@@ -1,6 +1,6 @@
-from Project.structured_output.structured_generation import format_context, generate_structured_response
-from Project.utils.validators import StructuredResponse
-from Project.llm.generation import HFLocalGenerationModel
+from Project.rag.structured_output.structured_generation import format_context, generate_structured_response
+from Project.rag.utils.validators import StructuredResponse
+from Project.rag.llm.generation import HFLocalGenerationModel
 from unittest.mock import MagicMock
 import pytest
 

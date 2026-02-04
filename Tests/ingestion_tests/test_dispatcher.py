@@ -2,7 +2,7 @@
 
 import pytest
 from pathlib import Path
-from Project.ingestion.dispatcher import extract
+from Project.rag.ingestion.dispatcher import extract
 
 
 # tests folders
