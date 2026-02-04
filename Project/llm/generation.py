@@ -26,7 +26,6 @@ class HFLocalGenerationModel(GenerationModel):
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
             torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-            device_map="auto"
         )
 
         self.max_new_tokens = max_new_tokens
