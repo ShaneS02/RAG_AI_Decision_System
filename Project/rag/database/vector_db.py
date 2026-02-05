@@ -2,7 +2,7 @@ import faiss
 import numpy as np
 
 from typing import Dict, List
-from Project.rag.utils.validators import Chunk
+from Project import Chunk #path defined 
 
 class VectorDatabase:
     def __init__(self, embedding_service):

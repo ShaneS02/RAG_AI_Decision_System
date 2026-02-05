@@ -3,7 +3,7 @@
 import pytest
 import uuid
 
-from Project.rag.ingestion.documents_ingestion import ingestion
+from Project import ingestion
 from pathlib import Path
 from datetime import datetime
 

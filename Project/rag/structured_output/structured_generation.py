@@ -1,5 +1,5 @@
 from typing import List
-from Project.rag.utils.validators import StructuredResponse
+from Project import StructuredResponse
 
 import json
 
@@ -46,7 +46,7 @@ Context:
 # 3. Context Formatting
 # =========================
 
-def format_context(chunks: List[dict]) -> str:    
+def _format_context(chunks: List[dict]) -> str:    
     formatted_chunks = []
 
     for chunk in chunks:
@@ -63,7 +63,7 @@ def format_context(chunks: List[dict]) -> str:
 
 #Runs structured generation and returns a validated StructuredResponse. Raises if output is malformed or unsupported.
 def generate_structured_response(chunks: List[dict], llm) -> StructuredResponse:
-    context = format_context(chunks)
+    context = _format_context(chunks)
     prompt = STRUCTURED_PROMPT.format(context=context)
 
     # ---- CALLING LLM ---- 

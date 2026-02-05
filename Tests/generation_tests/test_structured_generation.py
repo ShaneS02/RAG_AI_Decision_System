@@ -1,6 +1,7 @@
-from Project.rag.structured_output.structured_generation import format_context, generate_structured_response
-from Project.rag.utils.validators import StructuredResponse
-from Project.rag.llm.generation import HFLocalGenerationModel
+from Project.rag.structured_output.structured_generation import _format_context
+from Project import generate_structured_response
+from Project import StructuredResponse
+from Project import HFLocalGenerationModel
 from unittest.mock import MagicMock
 import pytest
 
@@ -11,11 +12,11 @@ def test_format_context_basic():
     ]
 
     expected = "[file1#chunk1]\nCats are mammals.\n\n[file1#chunk2]\nThey sleep a lot."
-    result = format_context(chunks)
+    result = _format_context(chunks)
     assert result == expected
 
 def test_format_context_empty():
-    assert format_context([]) == ""
+    assert _format_context([]) == ""
 
 
 def test_generate_structured_response_success():
