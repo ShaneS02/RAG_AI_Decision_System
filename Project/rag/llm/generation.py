@@ -16,7 +16,7 @@ class HFLocalGenerationModel(GenerationModel):
 
     def __init__(
         self,
-        model_name: str,
+        model_name: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
         device: str | None = None,
         max_new_tokens: int = 512,
         temperature: float = 0.0,
