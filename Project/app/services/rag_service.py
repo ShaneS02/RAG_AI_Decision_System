@@ -2,6 +2,10 @@ from typing import List
 from Project import generate_structured_response
 from Project import StructuredResponse
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class RAGService:
     def __init__(self, vector_store, llm):
@@ -9,6 +13,8 @@ class RAGService:
         self.llm = llm
 
     async def analyze(self, query: str) -> StructuredResponse:
+        logger.info("Analyze request received", extra={"text_length": len(query)})
+
         # Retrieve chunks
         chunks: List[dict] = self.vector_store.search(
             query=query,
