@@ -16,9 +16,9 @@ class RAGService:
         logger.info("Analyze request received", extra={"text_length": len(query)})
 
         # Retrieve chunks
-        chunks: List[dict] = self.vector_store.search(
+        chunks, _ = self.vector_store.search(
             query=query,
-            k=5
+            top_k=5
         )
 
         if not chunks:
