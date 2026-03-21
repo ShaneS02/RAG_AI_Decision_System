@@ -1,0 +1,16 @@
+.response {
+	background-color: #e0f7fa;
+	border-radius: 5px;
+
+	max-width: 50rem;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0.5rem 1rem;
+	box-sizing: border-box;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}

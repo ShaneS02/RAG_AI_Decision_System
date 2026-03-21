@@ -5,8 +5,12 @@ import ResponseViewer from "../components/ResponseViewer";
 const Home = ({ handleQuery, queryResponse }) => {
 	return (
 		<div className="homePage">
-			<ResponseViewer response={queryResponse} />
-			<QueryForm onSubmit={handleQuery} />
+			<span className="responseViewer">
+				<ResponseViewer response={queryResponse} />
+			</span>
+			<span className="querForm">
+				<QueryForm onSubmit={handleQuery} />
+			</span>
 		</div>
 	);
 };

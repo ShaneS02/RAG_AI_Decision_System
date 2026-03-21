@@ -1,5 +1,23 @@
+html,
+body {
+	height: 100%; /* make sure page can take full height */
+	margin: 0;
+}
+
 .homePage {
-	background-color: #8a8888;
-	height: 100vh;
-	width: auto;
+	background-color: #e0f7fa;
+	display: flex;
+	flex-direction: column;
+	height: 100vh; /* allows page to grow taller than viewport */
+}
+
+.responseViewer {
+	flex: 1; /* take all available space */
+	overflow-y: auto; /* scroll if content exceeds */
+	box-sizing: border-box;
+}
+
+.queryFormContainer {
+	flex-shrink: 0;
+	box-sizing: border-box;
 }

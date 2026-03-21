@@ -1,0 +1,64 @@
+.queryContainer {
+	display: flex;
+	gap: 0.5rem;
+	align-items: flex-end;
+
+	max-width: 40rem;
+	width: 100%;
+	margin: 0 auto;
+
+	background: #cbf9ff;
+	padding: 0.5rem;
+	border-radius: 0.75rem;
+
+	border: 1px solid #cbf9ff;
+}
+
+.queryInput {
+	flex: 1; /* takes remaining space */
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+
+	resize: none;
+	overflow-y: hidden;
+
+	border: 1px solid #cbf9ff;
+	border-radius: 0.5rem;
+	background: #cbf9ff;
+
+	outline: none;
+	transition:
+		border 0.2s,
+		box-shadow 0.2s;
+}
+
+.queryButton {
+	padding: 0.75rem 1.25rem;
+	font-size: 1rem;
+	font-weight: 500;
+	margin-top: auto;
+
+	background-color: #6d6d6d;
+	color: #e0f7fa;
+
+	border: none;
+	border-radius: 0.5rem;
+
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		transform 0.1s;
+}
+
+.queryButton:hover {
+	background-color: #1d4ed8;
+}
+
+.queryButton:active {
+	transform: scale(0.97);
+}
+
+.queryInput,
+.queryButton {
+	box-sizing: border-box;
+}

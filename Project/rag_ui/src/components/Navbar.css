@@ -1,11 +1,12 @@
 .navbar {
-	background-color: #38c0ca;
+	background-color: #e0f7fa;
 }
 
 .navbar-container {
 	margin: 0 auto;
-	max-width: 1280px;
+	max-width: 1230px;
 	padding: 0 8px;
+	border-bottom: 1px solid #000000;
 }
 
 .navbar-inner {
