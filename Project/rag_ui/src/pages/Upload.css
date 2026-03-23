@@ -1,0 +1,91 @@
+.upload-page {
+	background-color: #1f2b47;
+	display: flex;
+	justify-content: center; /* horizontal */
+	align-items: center; /* vertical */
+	flex-direction: column;
+	height: 90vh;
+	color: #ffffff;
+}
+
+.tabs {
+	display: flex;
+	gap: 2rem;
+	border-bottom: 1px solid #444;
+	margin-bottom: 2rem;
+
+	min-width: 100vh;
+}
+
+.tabs button {
+	flex: 1; /*makes file and url tab take equal space*/
+	background: none;
+	border: none;
+	color: #dbdbdb;
+	font-size: 1rem;
+	cursor: pointer;
+	padding-bottom: 0.5rem;
+}
+
+.tabs button.active {
+	color: #7aa2ff;
+	border-bottom: 2px solid #7aa2ff;
+}
+
+.upload-box {
+	flex: 1;
+	min-width: 40vw;
+	border: 2px dashed #7aa2ff;
+	padding: 3rem;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.file-input {
+	display: none;
+}
+
+.url-section {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem; /* space between input + button */
+	align-items: center;
+}
+
+.url-input {
+	width: 100%;
+	background-color: #1f2b47;
+	border: 1px solid #5d7dc9;
+	color: #ffffff;
+
+	padding: 7px;
+}
+
+.url-input::placeholder {
+	color: #7d91c0;
+}
+
+.url-input:hover {
+	border: 1px solid #ffffff;
+}
+
+.url-input:focus {
+	border: 1px solid #7aa2ff;
+	outline: none;
+}
+
+.file-label,
+.url-button {
+	padding: 0.75rem 1.5rem;
+	background-color: #1f2937;
+	border: 1px solid #7aa2ff;
+	border-radius: 8px;
+	color: #7aa2ff;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.file-label:hover,
+.url-button:hover {
+	background-color: #273244;
+}

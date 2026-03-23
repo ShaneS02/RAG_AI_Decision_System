@@ -1,7 +1,8 @@
 .response {
-	background-color: #e0f7fa;
+	background-color: #cbf9ff;
 	border-radius: 5px;
 
+	min-height: 33rem;
 	max-width: 50rem;
 	width: 100%;
 	margin: 0 auto;
