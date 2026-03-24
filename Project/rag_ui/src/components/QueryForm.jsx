@@ -1,4 +1,5 @@
-import { useState, useRef, use } from "react";
+import { useState, useRef } from "react";
+import { Send, Loader } from "lucide-react";
 import "./QueryForm.css";
 
 export default function QueryForm({ onSubmit }) {
@@ -30,16 +31,24 @@ export default function QueryForm({ onSubmit }) {
 	};
 
 	return (
-		<div className="queryContainer" ref={containerRef}>
+		<div className="query-container" ref={containerRef}>
 			<textarea
-				className="queryInput"
+				className="query-input"
 				ref={textareaRef}
 				value={query}
 				onChange={handleInput}
 				placeholder="Type your text here..."
 			/>
-			<button className="queryButton" onClick={handleSubmit} disabled={loading}>
-				{loading ? "Loading..." : "Submit"}
+			<button
+				className="query-button"
+				onClick={handleSubmit}
+				disabled={loading}
+			>
+				{loading ? (
+					<Loader size={20} className="spin" />
+				) : (
+					<Send size={20} className="button-icon" />
+				)}
 			</button>
 		</div>
 	);

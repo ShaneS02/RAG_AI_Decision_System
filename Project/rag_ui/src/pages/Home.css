@@ -1,23 +1,61 @@
-html,
-body {
-	height: 100%; /* make sure page can take full height */
-	margin: 0;
-}
-
-.homePage {
-	background-color: #1f2b47;
+.home {
 	display: flex;
+	height: 100vh;
+}
+
+/* LEFT SIDE */
+.sidebar {
+	width: 250px;
+	background-color: #1b243d;
+	border-right: 1px solid #000000;
+	color: white;
+	padding: 1rem;
+}
+
+/* Title section */
+.sidebar-header {
+	padding: 1rem;
+	font-weight: bold;
+	color: #7aa2ff;
+}
+
+.chat-list {
+	flex: 1; /* fills remaining space */
+	overflow-y: auto; /* scrolls independently */
+	padding: 0.5rem;
+	color: #7aa2ff;
+}
+
+/* RIGHT SIDE */
+.main-content {
+	display: flex;
+	flex: 1;
+	position: relative;
 	flex-direction: column;
-	height: 90vh;
+	height: 100vh;
+	background-color: #1f2b47;
 }
 
-.responseViewer {
-	flex: 1; /* take all available space */
-	overflow-y: auto; /* scroll if content exceeds */
+.main-content.no-response {
+	justify-content: center;
+	align-items: center;
+}
+
+.main-content.has-response {
+	position: fixed;
+	bottom: 0;
+	left: 250px; /* matches sidebar width */
+	right: 0;
+}
+
+.query-form {
+	width: 100%; /* stretch to fill container */
+	max-width: 800px; /* don’t exceed container width */
+	margin: 0 auto; /* center horizontally */
 	box-sizing: border-box;
 }
 
-.queryFormContainer {
-	flex-shrink: 0;
-	box-sizing: border-box;
+.response-viewer {
+	flex: 1;
+	overflow-y: hidden;
 }

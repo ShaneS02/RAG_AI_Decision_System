@@ -1,5 +1,8 @@
 .navbar {
-	background-color: #cbf9ff;
+	background-color: #28344f;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
 }
 
 .navbar-container {

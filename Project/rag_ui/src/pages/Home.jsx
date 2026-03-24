@@ -3,28 +3,42 @@ import QueryForm from "../components/QueryForm";
 import ResponseViewer from "../components/ResponseViewer";
 
 const Home = ({ handleQuery, queryResponse }) => {
+	const hasResponse = false;
+
 	return (
-		<div className="homePage">
+		<div className="home">
 			{/* DRAFT OF PAGE CHANGES*/}
 
 			{/* LEFT SIDE IS A SIDEBAR */}
+			<div className="sidebar">
+				<div className="sidebar-header">
+					<h2>Chats</h2>
+				</div>
+
+				<div className="chat-list">
+					<div className="chat-item">Chat 1</div>
+				</div>
+			</div>
 
 			{/* RIGHT IS A BLANK AREA WHOSE BEHAVIOR WILL CHANGE WITH SECTIONS DISPLAYED */}
+			<div
+				className={`main-content ${hasResponse ? "has-response" : "no-response"}`}
+			>
+				{/* RESPONSE VIEWER WILL NOT BE ACTIVE UNLESS THERE IS SOMETHING TO SHOW */}
+				{hasResponse && (
+					<div className="response-viewer">
+						<ResponseViewer response="{queryResponse}" />
+					</div>
+				)}
 
-			{/* RESPONSE VIEWER WILL NOT BE ACTIVE UNLESS THERE IS SOMETHING TO SHOW */}
-
-			{/* QUERY FORM WILL BE ALGIN IN THE CENTER IF RESPONSE VIEWER IS NOT ACTIVE 
+				{/* QUERY FORM WILL BE ALGIN IN THE CENTER IF RESPONSE VIEWER IS NOT ACTIVE 
 				ELSE HAVE IT ATTACHED TO THE BOTTOM OF THAT SECTION
-			*/}
+				*/}
 
-			{/* NAVBAR SHOULD BE ATTAHCHED TO THE TOP SO IT IS STILL VISIBLE WHEN SCROLLING */}
-
-			<span className="responseViewer">
-				<ResponseViewer response={queryResponse} />
-			</span>
-			<span className="querForm">
-				<QueryForm onSubmit={handleQuery} />
-			</span>
+				<div className="query-form">
+					<QueryForm onSubmit="{handleQuery}" />
+				</div>
+			</div>
 		</div>
 	);
 };
