@@ -27,6 +27,26 @@ function App() {
 		}
 	};
 
+	const uploadFile = async (selectedFile) => {
+		const formData = new FormData();
+		formData.append("file", selectedFile);
+
+		try {
+			for (let pair of formData.entries()) {
+				console.log(pair[0], pair[1]);
+			}
+			const res = await fetch("http://localhost:8000/upload", {
+				method: "POST",
+				body: formData,
+			});
+
+			const data = await res.json();
+			console.log("Upload success:", data);
+		} catch (error) {
+			console.error("Upload failed:", error);
+		}
+	};
+
 	const router = createBrowserRouter(
 		createRoutesFromElements(
 			<Route path="/" element={<MainLayout />}>
@@ -36,7 +56,7 @@ function App() {
 						<Home handleQuery={handleQuerySubmit} queryResponse={response} />
 					}
 				/>
-				<Route path="/upload" element={<Upload />} />
+				<Route path="/upload" element={<Upload uploadFile={uploadFile} />} />
 			</Route>,
 		),
 	);

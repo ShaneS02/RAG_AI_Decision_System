@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UploadPageButton from "../components/UploadPageButton";
 
 const UrlUpload = () => {
 	const [url, setUrl] = useState("");
@@ -17,9 +18,11 @@ const UrlUpload = () => {
 					value={url}
 					onChange={(e) => setUrl(e.target.value)}
 				/>
-				<button className="url-button" onClick={handleSubmit}>
-					Upload
-				</button>
+				<UploadPageButton
+					className="url-button"
+					onClick={handleSubmit}
+					name={"Upload"}
+				/>
 			</div>
 		</div>
 	);

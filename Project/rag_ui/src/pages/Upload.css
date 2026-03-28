@@ -75,6 +75,8 @@
 }
 
 .file-label,
+.file-upload-button,
+.file-clear-button,
 .url-button {
 	padding: 0.75rem 1.5rem;
 	background-color: #1f2937;
@@ -86,6 +88,21 @@
 }
 
 .file-label:hover,
+.file-upload-button:hover,
+.file-clear-button:hover,
 .url-button:hover {
 	background-color: #273244;
+}
+
+.file-selected {
+	display: flex;
+	flex-direction: column;
+	margin-top: 1rem;
+}
+
+.file-selected-buttons {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	justify-content: center;
 }

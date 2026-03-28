@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from .api.analyze import router as analyze_router
 from .api.health import router as health_router
+from .api.upload import router as upload_router
 from .dependencies import get_rag_service
 
 import logging
@@ -27,4 +28,5 @@ app.add_middleware(
 # ===== End CORS config =====
 
 app.include_router(analyze_router, dependencies=[Depends(get_rag_service)])
+app.include_router(upload_router)
 app.include_router(health_router)
