@@ -1,11 +1,11 @@
 import { useState } from "react";
 import UploadPageButton from "../components/UploadPageButton";
 
-const UrlUpload = () => {
+const UrlUpload = ({ uploadUrl }) => {
 	const [url, setUrl] = useState("");
 
 	const handleSubmit = () => {
-		console.log(url);
+		uploadUrl(url);
 	};
 
 	return (

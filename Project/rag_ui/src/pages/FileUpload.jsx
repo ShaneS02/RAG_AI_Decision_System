@@ -6,7 +6,6 @@ const FileUpload = ({ uploadFile }) => {
 	const fileInputRef = useRef(null);
 
 	const handleUploadSubmit = (e) => {
-		console.log("here");
 		uploadFile(fileSelected);
 	};
 	const handleClearSubmit = (e) => {

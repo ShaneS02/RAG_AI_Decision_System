@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from ..schemas.analyze import AnalyzeRequest, AnalyzeResponse
 from ..services.rag_service import RAGService
-from ..dependencies import get_rag_service  # or wherever it lives
+from ..dependencies import get_rag_service 
 
 router = APIRouter()
 

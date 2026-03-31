@@ -4,7 +4,7 @@ import UrlUpload from "./UrlUpload";
 
 import "./Upload.css";
 
-const Upload = ({ uploadFile }) => {
+const Upload = ({ uploadFile, uploadUrl }) => {
 	const [activeTab, setActiveTab] = useState("file");
 
 	return (
@@ -29,7 +29,7 @@ const Upload = ({ uploadFile }) => {
 			{/* Content */}
 			<div className="tab-content">
 				{activeTab === "file" && <FileUpload uploadFile={uploadFile} />}
-				{activeTab === "url" && <UrlUpload />}
+				{activeTab === "url" && <UrlUpload uploadUrl={uploadUrl} />}
 			</div>
 		</div>
 	);

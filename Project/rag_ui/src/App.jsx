@@ -35,13 +35,42 @@ function App() {
 			for (let pair of formData.entries()) {
 				console.log(pair[0], pair[1]);
 			}
-			const res = await fetch("http://localhost:8000/upload", {
+			const res = await fetch("http://localhost:8000/uploadFile", {
 				method: "POST",
 				body: formData,
 			});
 
+			if (!res.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.detail);
+			}
+
 			const data = await res.json();
 			console.log("Upload success:", data);
+		} catch (error) {
+			console.error("Upload failed:", error);
+		}
+	};
+
+	const uploadUrl = async (url) => {
+		if (!url) return;
+
+		try {
+			const res = await fetch("http://localhost:8000/uploadUrl", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ url }),
+			});
+
+			if (!res.ok) {
+				const err = await res.json();
+				throw new Error(err.detail);
+			}
+
+			const data = await res.json();
+			console.log("URL upload success:", data);
 		} catch (error) {
 			console.error("Upload failed:", error);
 		}
@@ -56,7 +85,10 @@ function App() {
 						<Home handleQuery={handleQuerySubmit} queryResponse={response} />
 					}
 				/>
-				<Route path="/upload" element={<Upload uploadFile={uploadFile} />} />
+				<Route
+					path="/upload"
+					element={<Upload uploadFile={uploadFile} uploadUrl={uploadUrl} />}
+				/>
 			</Route>,
 		),
 	);

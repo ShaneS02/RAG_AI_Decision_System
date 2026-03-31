@@ -28,5 +28,5 @@ app.add_middleware(
 # ===== End CORS config =====
 
 app.include_router(analyze_router, dependencies=[Depends(get_rag_service)])
-app.include_router(upload_router)
+app.include_router(upload_router, dependencies=[Depends(get_rag_service)])
 app.include_router(health_router)
