@@ -12,8 +12,9 @@ import Home from "./pages/Home";
 import Upload from "./pages/Upload";
 
 function App() {
-	const [response, setResponse] = useState("placeholder");
+	const [response, setResponse] = useState("");
 	const handleQuerySubmit = async (query) => {
+		console.log(query);
 		try {
 			const res = await fetch("http://localhost:8000/analyze", {
 				method: "POST",
@@ -24,6 +25,7 @@ function App() {
 			setResponse(data);
 		} catch (err) {
 			setResponse({ error: err.message });
+			console.error(err.message);
 		}
 	};
 

@@ -25,7 +25,6 @@ router = APIRouter()
 #uploading a docx or pdf file
 @router.post("/uploadFile", tags=["uploadFile"])
 async def uploadFile(file: UploadFile = File(...), rag_service: RAGService = Depends(get_rag_service)):
-    print("uploading file")
     contents = await file.read()
     suffix = determineSuffix(file)
     if not suffix: return {"error": "Unsupported file type"}

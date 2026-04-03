@@ -13,4 +13,5 @@ async def analyze(
     try:
         return await rag_service.analyze(request.text)
     except Exception as e:
+        print(f'what project did I do in python: {e}')
         raise HTTPException(status_code=500, detail=str(e)) #HTTPException(status_code=500, detail="Analysis failed")

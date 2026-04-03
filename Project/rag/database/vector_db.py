@@ -1,7 +1,11 @@
+import datetime
+
 import faiss
 import numpy as np
 
 from typing import Dict, List
+
+from torch import chunk
 from Project import Chunk #path defined 
 
 class VectorDatabase:
@@ -21,27 +25,32 @@ class VectorDatabase:
         
     #properly format chunks
     def prepare_chunks(self, document: Dict, chunks: List):
+        print("preparing chunks with metadata for vector database storage")
         prepared_chunks = []
 
         for chunk in chunks:
             # Store chunk with metadata
             formatted = {
                 "document_id": document["id"],
-                "chunk_id": chunk["chunk_id"],
+                "chunk_id": str(chunk["chunk_id"]),
                 "text": chunk["text"],
                 "file_name": document["file_name"], 
                 "source": document["source"],
                 "metadata": document["metadata"],
                 "created_at": document["ingested_at"],
-                "citation": f"{document["file_name"]}#chunk{chunk["chunk_id"]}"
+                "citation": f"{document['file_name']}#chunk{chunk['chunk_id']}"
             }
+
+            if isinstance(formatted["created_at"], str):
+                formatted["created_at"] = datetime.datetime.fromisoformat(formatted["created_at"].replace("Z", "+00:00"))
 
             #raises an exception if format is incorrect
             self._validate_chunk(formatted)
             
-            #if valid, append
+            #if valid, append             
             prepared_chunks.append(formatted)
-            
+
+        print("chunk preparation complete, all chunks validated successfully")
         return prepared_chunks
 
     # Add chunks to the FAISS index
@@ -56,7 +65,8 @@ class VectorDatabase:
         self.metadata.extend(chunks)
 
     # Search the FAISS index for similar vectors
-    def search(self, query: str, top_k: int = 5, min_similarity = 0.75):
+    def search(self, query: str, top_k: int = 5, min_similarity = 0.4):
+        print("beggining search in vector database")
         query_embedding = self.embedding_service.embed_text(query)
         query_vector = np.array([query_embedding], dtype="float32") # FAISS expects 2D array
         scores, indices = self.index.search(query_vector, top_k) #scores shape (1, top_k), indices shape (1, top_k) 
@@ -65,6 +75,7 @@ class VectorDatabase:
         filtered_scores = []
 
         #filter results below the min similarity
+        print("filtering results based on minimum similarity threshold")
         for score, idx in zip(scores[0], indices[0]):
             if idx == -1 or score < min_similarity:
                 continue   # Not relevant
@@ -75,6 +86,7 @@ class VectorDatabase:
         if not results:
             return [], None
         
+        print("finshed search in vector database, returning results and scores")
         return results, filtered_scores
 
     # Save and load the FAISS index and metadata 

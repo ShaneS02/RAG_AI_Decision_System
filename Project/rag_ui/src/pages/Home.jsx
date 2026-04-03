@@ -3,7 +3,7 @@ import QueryForm from "../components/QueryForm";
 import ResponseViewer from "../components/ResponseViewer";
 
 const Home = ({ handleQuery, queryResponse }) => {
-	const hasResponse = false;
+	const hasResponse = !!queryResponse;
 
 	return (
 		<div className="home">
@@ -27,7 +27,7 @@ const Home = ({ handleQuery, queryResponse }) => {
 				{/* RESPONSE VIEWER WILL NOT BE ACTIVE UNLESS THERE IS SOMETHING TO SHOW */}
 				{hasResponse && (
 					<div className="response-viewer">
-						<ResponseViewer response="{queryResponse}" />
+						<ResponseViewer response={queryResponse} />
 					</div>
 				)}
 
@@ -35,8 +35,8 @@ const Home = ({ handleQuery, queryResponse }) => {
 				ELSE HAVE IT ATTACHED TO THE BOTTOM OF THAT SECTION
 				*/}
 
-				<div className="query-form">
-					<QueryForm onSubmit="{handleQuery}" />
+				<div className={`query-form ${hasResponse ? "bottom" : "center"}`}>
+					<QueryForm onSubmit={handleQuery} />
 				</div>
 			</div>
 		</div>

@@ -6,6 +6,7 @@ from Project import HFLocalGenerationModel
 embedding = EmbeddingService()
 vector_store = VectorDatabase(embedding_service=embedding)
 llm_client = HFLocalGenerationModel()
+rag_service = RAGService(vector_store, llm_client)
 
 def get_rag_service() -> RAGService:
-    return RAGService(vector_store, llm_client)
+    return rag_service
