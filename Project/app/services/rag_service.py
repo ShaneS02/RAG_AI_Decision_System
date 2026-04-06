@@ -26,6 +26,7 @@ class RAGService:
         #Store info in the vector database
         self.vector_store.add_chunks(prepared_chunks)
 
+        print("upload complete")
         return
 
 

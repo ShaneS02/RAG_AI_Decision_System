@@ -87,6 +87,7 @@ class VectorDatabase:
             return [], None
         
         print("finshed search in vector database, returning results and scores")
+        print(f"Results: {results}")
         return results, filtered_scores
 
     # Save and load the FAISS index and metadata 

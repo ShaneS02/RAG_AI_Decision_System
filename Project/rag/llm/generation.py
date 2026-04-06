@@ -41,6 +41,7 @@ class HFLocalGenerationModel(GenerationModel):
     def generate(self, prompt: str) -> str:
         # Tokenize the input prompt and move to the device. "pt" - return pytorch tensor
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        
 
         # Disable gradient computation for inference
         with torch.no_grad():
@@ -49,12 +50,16 @@ class HFLocalGenerationModel(GenerationModel):
                 **inputs,
                 max_new_tokens=self.max_new_tokens,
                 temperature=self.temperature,
-                do_sample=self.temperature > 0,  # deterministic if temperature=0
-                pad_token_id=self.tokenizer.eos_token_id  # ensures proper padding/eos handling
+                do_sample=False,  # deterministic if temperature=0
+                pad_token_id=self.tokenizer.eos_token_id,   # ensures proper padding/eos handling
+                eos_token_id=self.tokenizer.eos_token_id
             )
+
+        input_length = inputs["input_ids"].shape[1]
+        generated_ids = output_ids[0][input_length:] #decode only output text
 
         # Decode token IDs back to text, skipping special tokens
         return self.tokenizer.decode(
-            output_ids[0],
+            generated_ids,
             skip_special_tokens=True
         )

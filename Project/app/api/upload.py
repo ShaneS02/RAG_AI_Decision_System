@@ -48,16 +48,13 @@ async def uploadFile(file: UploadFile = File(...), rag_service: RAGService = Dep
     return {"filename": file.filename, "size": len(contents)}
 
 
-@router.post("/uploadUrl", tags=["uploadFile"])
+@router.post("/uploadUrl", tags=["uploadUrl"])
 async def uploadUrl(request: URLRequest, rag_service: RAGService = Depends(get_rag_service)):
     try:
-        response = requests.get(request.url) #blocks thread unitl complete, reason for no async 
-    
-        if response.status_code != 200:
-            raise HTTPException(status_code=400, detail="Failed to fetch URL")
+        url = request.url
 
         #handles text extraction, chunking, embedding and vector db storage  
-        rag_service.upload(response)
+        rag_service.upload(url)
         
         return {
             "url": request.url,

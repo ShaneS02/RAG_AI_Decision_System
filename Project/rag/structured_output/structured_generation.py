@@ -23,9 +23,6 @@ Rules:
 - Output ONLY valid JSON
 - Do NOT include explanations outside the JSON
 
-Generate a JSON object matching the schema below, filling all fields 
-with real data from the context. Do not output the schema itself.
-
 JSON Schema:
 {{
   "summary": string,
@@ -41,22 +38,26 @@ JSON Schema:
   "confidence_reasoning": string
 }}
 
+Example output:
+{{
+  "summary": "Not found in provided sources",
+  "risks": [
+    {{
+      "description": "Not found in provided sources",
+      "severity": "LOW",
+      "rationale": "No relevant information found",
+      "citations": []
+    }}
+  ],
+  "confidence_score": 0.0,
+  "confidence_reasoning": "No relevant information found"
+}}
+
 Context:
 {context}
 
 Task:
-Using the context above, fill the JSON schema with actual information. 
-If a value is missing in the context, use "Not found in provided sources" or 0.0 as appropriate.
-Output ONLY the JSON.
-
-Below is an example. Note, This is just an example of formatting, fill all fields with actual information.
-Example output:
-{{
-  "summary": "Not found in provided sources",
-  "risks": [],
-  "confidence_score": 0.0,
-  "confidence_reasoning": "No relevant information found"
-}}
+Analyze the context and respond in JSON format according to the schema above.
 """
 
 
@@ -89,12 +90,13 @@ def _format_context(chunks: List[dict]) -> str:
 
 
 
-def extract_json(text: str) -> str:
-    match = re.search(r'\{.*\}', text, re.DOTALL)
-    if match:
-        return match.group()
-    else:
-        raise ValueError(f"No JSON object found in LLM output:\n{text}")
+def extract_json(output: str) -> dict:
+    match = re.search(r"\{.*?\}\s*(?=Example output:|\Z)", output, re.DOTALL)
+    if not match:
+        raise ValueError(f"No JSON found in output:\n{output}")
+
+    print(f"JSON matched: {match.group()}")
+    return match.group()
 
 # =========================
 # Structured Generation
@@ -107,11 +109,13 @@ def generate_structured_response(chunks: List[dict], llm) -> StructuredResponse:
     prompt = STRUCTURED_PROMPT.format(context=context)
 
     # ---- CALLING LLM ---- 
+    print("Calling LLM:\n")
     raw_output = llm.generate(prompt) # call the llm to generate output
+    raw_output = raw_output.strip()
 
     #--- EXTRACTING JSON ----
+    print("Extracting JSON:\n")
     json_str = extract_json(raw_output)
-    print(f"Extracted JSON string from LLM output:\n{json_str}")
     print(f"End of extracted JSON string")
 
     # ---- PARSING JSON ---- 
