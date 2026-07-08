@@ -1,7 +1,6 @@
-from typing import List
 from Project import generate_structured_response
 from Project import StructuredResponse
-from Project import ingestion, chunk_text
+from Project import ingestion, chunk_text, TokenManager
 
 import logging
 
@@ -20,7 +19,8 @@ class RAGService:
 
         #chunk and embed the extracted text
         tokenizer = self.vector_store.embedding_service.tokenizer()
-        chunks = chunk_text(text=extracted_text["text"], target_tokens=200, max_tokens=256, tokenize_fn=tokenizer)
+        token_manager = TokenManager(tokenizer=tokenizer, target_tokens=200, max_tokens=256)
+        chunks = chunk_text(text=extracted_text["text"], token_manager=token_manager)
         prepared_chunks = self.vector_store.prepare_chunks(extracted_text, chunks)
         
         #Store info in the vector database

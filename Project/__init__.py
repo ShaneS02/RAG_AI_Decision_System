@@ -1,5 +1,6 @@
 from .rag.ingestion.documents_ingestion import ingestion
 from .rag.chunking.chunking import chunk_text
+from .rag.chunking.token_model import TokenManager
 
 from .rag.llm.embeddings import EmbeddingService
 from .rag.utils.validators import Chunk, StructuredResponse

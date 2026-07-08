@@ -1,16 +1,24 @@
 # Tests for chunking functionality
 
-from Project import chunk_text  # Assuming the chunking function is in chunking_module.py
+from Project import chunk_text, TokenManager
 
-def simple_tokenizer(text: str):
-    return text.split()
+class SimpleTokenizer:
+    def __call__(self, text: str):
+        return {
+            "input_ids": text.split()
+        }
+
+    def decode(self, token_ids):
+        return " ".join(token_ids)
+
+
 
 def test_empty_input():
-    chunks = chunk_text("", simple_tokenizer)
+    chunks = chunk_text("", TokenManager(tokenizer=SimpleTokenizer()))
     assert chunks == []
 
 def test_whitespace_input():
-    chunks = chunk_text("   \n\n  ", simple_tokenizer)
+    chunks = chunk_text("   \n\n  ", TokenManager(tokenizer=SimpleTokenizer()))
     assert chunks == []
 
 
@@ -19,9 +27,7 @@ def test_chunk_size_limits():
 
     chunks = chunk_text(
         text,
-        simple_tokenizer,
-        target_tokens=200,
-        max_tokens=300
+        TokenManager(tokenizer=SimpleTokenizer(), target_tokens=200, max_tokens=300)
     )
 
     for chunk in chunks:
@@ -32,8 +38,7 @@ def test_paragraph_preservation():
 
     chunks = chunk_text(
         text,
-        simple_tokenizer,
-        target_tokens=50
+        TokenManager(tokenizer=SimpleTokenizer(), target_tokens=50)
     )
 
     combined = " ".join(c["text"] for c in chunks)
@@ -47,10 +52,7 @@ def test_oversized_paragraph_is_split():
 
     chunks = chunk_text(
         text,
-        simple_tokenizer,
-        target_tokens=200,
-        max_tokens=300,
-        overlap_tokens=20
+        TokenManager(tokenizer=SimpleTokenizer(), target_tokens=200, max_tokens=300, overlap_tokens=20)
     )
 
     assert len(chunks) > 1
@@ -62,10 +64,7 @@ def test_overlap_between_chunks():
 
     chunks = chunk_text(
         text,
-        simple_tokenizer,
-        target_tokens=100,
-        max_tokens=150,
-        overlap_tokens=10
+        TokenManager(tokenizer=SimpleTokenizer(), target_tokens=100, max_tokens=150, overlap_tokens=10)
     )
 
     first = chunks[0]["text"].split()
@@ -79,9 +78,7 @@ def test_small_chunks_are_merged():
 
     chunks = chunk_text(
         text,
-        simple_tokenizer,
-        target_tokens=100,
-        min_tokens=20
+        TokenManager(tokenizer=SimpleTokenizer(), target_tokens=100, min_tokens=20)
     )
 
     assert len(chunks) == 1
@@ -90,7 +87,7 @@ def test_small_chunks_are_merged():
 def test_chunking_is_deterministic():
     text = "word " * 300
 
-    chunks1 = chunk_text(text, simple_tokenizer)
-    chunks2 = chunk_text(text, simple_tokenizer)
+    chunks1 = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer()))
+    chunks2 = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer()))
 
     assert chunks1 == chunks2
