@@ -24,6 +24,7 @@ def extract_html_text(file_path):
     # Fetch HTML content from the URL and handle potential request errors
     try:
         response = requests.get(file_path, timeout=10) # Fetch HTML content from URL with 10s timeout
+        print("HTTP status code:", response.status_code) # Log the HTTP status code
         response.raise_for_status() # Raise an exception for bad status codes (4xx, 5xx)
         html = response.text # Get HTML content
     except requests.exceptions.ConnectionError:

@@ -8,56 +8,54 @@ import re
 # Prompt Template
 # =========================
 
+SYSTEM_PROMPT = """
+You are an analytical decision-support assistant.
 
-STRUCTURED_PROMPT = """
-You are an analytical decision-support system.
-
-Using ONLY the provided context, generate a response that strictly follows the JSON schema below.
+Your job is to analyze documents using only the information provided by the user.
 
 Rules:
-- Do not use external knowledge
-- Do not speculate
-- If information is missing, say "Not found in provided sources"
-- Every factual claim must be supported by citations
-- Citations MUST match the citation IDs in the context
-- Output ONLY valid JSON
-- Do NOT include explanations outside the JSON
+- Do not use external knowledge.
+- Do not invent facts.
+- Always return valid JSON only.
 
-JSON Schema:
+"""
+
+STRUCTURED_PROMPT = """
+Analyze the provided document context and answer the user's request.
+
+User Request:
+{query}
+
+Instructions:
+- Use ONLY the provided context to answer.
+- Identify information that is directly stated or reasonably implied by the context.
+- Do not make claims that cannot be supported by the context.
+- Every factual claim must include citations using the Source IDs provided in the context.
+- If a field cannot be determined from the context, use "Not found in provided sources" for that field.
+- If no relevant information exists in the context, return a report indicating that no information was found.
+- Output ONLY valid JSON. Do not include explanations, markdown, or text outside the JSON object.
+
+Return a JSON object matching this structure:
 {{
-  "summary": string,
+  "summary": "<brief summary of the document relevant to the user request>",
   "risks": [
     {{
-      "description": string,
-      "severity": "LOW" | "MEDIUM" | "HIGH",
-      "rationale": string,
-      "citations": [string]
+      "description": "<identified risk>",
+      "severity": "LOW | MEDIUM | HIGH",
+      "rationale": "<explanation of why this is a risk based only on the context>",
+      "citations": [
+        "<Source>"
+      ]
     }}
   ],
-  "confidence_score": number,
-  "confidence_reasoning": string
-}}
-
-Example output:
-{{
-  "summary": "Not found in provided sources",
-  "risks": [
-    {{
-      "description": "Not found in provided sources",
-      "severity": "LOW",
-      "rationale": "No relevant information found",
-      "citations": []
-    }}
-  ],
-  "confidence_score": 0.0,
-  "confidence_reasoning": "No relevant information found"
+  "confidence_score": <number between 0 and 1>,
+  "confidence_reasoning": "<reason for the confidence score based on the amount and quality of supporting information>"
 }}
 
 Context:
 {context}
 
-Task:
-Analyze the context and respond in JSON format according to the schema above.
+JSON Response:
 """
 
 
@@ -83,7 +81,7 @@ def _format_context(chunks: List[dict]) -> str:
     for chunk in chunks:
         clean_text = _normalize_text(chunk['text'])
         formatted_chunks.append(
-            f"[{chunk['citation']}]\n{clean_text}"
+            f"[Source: {chunk['citation']}]\nContent: {clean_text}"
         )
 
     return "\n\n".join(formatted_chunks)
@@ -91,7 +89,7 @@ def _format_context(chunks: List[dict]) -> str:
 
 
 def extract_json(output: str) -> dict:
-    match = re.search(r"\{.*?\}\s*(?=Example output:|\Z)", output, re.DOTALL)
+    match = re.search(r"\{.*\}", output, re.DOTALL)
     if not match:
         raise ValueError(f"No JSON found in output:\n{output}")
 
@@ -104,14 +102,32 @@ def extract_json(output: str) -> dict:
 
 
 #Runs structured generation and returns a validated StructuredResponse. Raises if output is malformed or unsupported.
-def generate_structured_response(chunks: List[dict], llm) -> StructuredResponse:
+def generate_structured_response(chunks: List[dict], llm, question: str) -> StructuredResponse:
+    print("Generating structured response:\n")
     context = _format_context(chunks)
-    prompt = STRUCTURED_PROMPT.format(context=context)
+
+
+    user_prompt = STRUCTURED_PROMPT.format(query=question, context=context)
+    
+    print("Formatted user prompt for LLM:\n")
+    print(user_prompt)
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_prompt}
+    ]
+
+    print("Formatted prompt for LLM:\n")
+    prompt = llm.format_prompt_template(messages)
 
     # ---- CALLING LLM ---- 
     print("Calling LLM:\n")
     raw_output = llm.generate(prompt) # call the llm to generate output
     raw_output = raw_output.strip()
+
+    print("===================Raw output from LLM ===================\n")
+    print(f"Raw output from LLM:\n{raw_output}")
+    print("\n=================== End of raw output ===================\n")
+    
 
     #--- EXTRACTING JSON ----
     print("Extracting JSON:\n")

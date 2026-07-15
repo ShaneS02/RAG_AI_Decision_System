@@ -16,7 +16,7 @@ class HFLocalGenerationModel(GenerationModel):
 
     def __init__(
         self,
-        model_name: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        model_name: str = "Qwen/Qwen2.5-3B-Instruct",
         device: str | None = None,
         max_new_tokens: int = 512,
         temperature: float = 0.0,
@@ -31,6 +31,15 @@ class HFLocalGenerationModel(GenerationModel):
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+
+
+    def format_prompt_template(self, messages: list[dict]) -> str:
+       return self.tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+
  
     """
     Generate text given a prompt.
@@ -38,7 +47,7 @@ class HFLocalGenerationModel(GenerationModel):
     Returns: Generated string output from the model.
     """
 
-    def generate(self, prompt: str) -> str:
+    def generate(self, prompt) -> str:
         # Tokenize the input prompt and move to the device. "pt" - return pytorch tensor
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         

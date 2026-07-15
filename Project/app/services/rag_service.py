@@ -46,7 +46,8 @@ class RAGService:
         # Retrieve the Structured response from llm answer
         structured_response = generate_structured_response(
             chunks=chunks,
-            llm=self.llm
+            llm=self.llm,
+            question=query
         )
 
         return structured_response
