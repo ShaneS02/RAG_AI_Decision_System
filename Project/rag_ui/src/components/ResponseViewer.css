@@ -9,6 +9,7 @@
 	margin: 0 auto;
 	padding: 0.5rem 1rem;
 	box-sizing: border-box;
+	white-space: pre-wrap;
 
 	color: #ffffff;
 }
