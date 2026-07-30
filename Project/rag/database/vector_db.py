@@ -84,6 +84,7 @@ class VectorDatabase:
             filtered_scores.append(score)
 
         if not results:
+            print("No relevant context retrieved, returning empty results and scores")
             return [], None
         
         print("finshed search in vector database, returning results and scores")

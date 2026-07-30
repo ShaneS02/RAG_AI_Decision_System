@@ -57,9 +57,8 @@ def test_normalization(embedder):
     assert np.isclose(norm, 1.0, atol=1e-5)
 
 #tests behavior with edge case inputs
-def test_edge_cases(embedder):
-    texts = ["", "😀🚀✨", "a"*5000]
-    for t in texts:
-        e = embedder.embed_text(t)
-        assert len(e) == 384
-        assert all(isinstance(x, float) for x in e)
+@pytest.mark.parametrize("text", ["", "😀🚀✨", "a"*5000])
+def test_edge_cases(embedder, text):
+    e = embedder.embed_text(text)
+    assert len(e) == 384
+    assert all(isinstance(x, float) for x in e)

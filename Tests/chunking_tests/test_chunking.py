@@ -91,3 +91,51 @@ def test_chunking_is_deterministic():
     chunks2 = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer()))
 
     assert chunks1 == chunks2
+
+def test_exactly_target_tokens():
+    text = "word " * 200
+
+    chunks = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer(), target_tokens=200,max_tokens=300))
+
+    assert len(chunks) == 1
+    assert chunks[0]["token_count"] == 200
+
+def test_exactly_max_tokens():
+    text = "word " * 300
+
+    chunks = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer(),target_tokens=300, max_tokens=300))
+
+    assert len(chunks) == 1
+    assert chunks[0]["token_count"] == 300
+
+
+def test_exactly_min_tokens_not_merged():
+    text = ("word " * 20).strip() + "\n" + ("word " * 20).strip()
+
+    chunks = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer(), target_tokens=25, max_tokens=100, min_tokens=20))
+
+    assert len(chunks) == 2
+
+def test_no_overlap_between_chunks():
+    text = " ".join(f"word{i}" for i in range(500))
+
+    chunks = chunk_text(text,  TokenManager(tokenizer=SimpleTokenizer(), target_tokens=100, max_tokens=150, overlap_tokens=0))
+
+    first = chunks[0]["text"].split()
+    second = chunks[1]["text"].split()
+
+    assert set(first[-10:]).isdisjoint(second[:10]) #checks if tokens intersect
+
+def test_small_chunk_not_merged_when_exceeding_max():
+    text = (("word " * 290).strip() + "\n" + ("tiny " * 20).strip())
+
+    chunks = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer(),target_tokens=300, max_tokens=300, min_tokens=50))
+
+    assert len(chunks) == 2
+
+def test_large_chunks_not_merged():
+    text = (("word " * 100).strip() + "\n" + ("word " * 100).strip())
+
+    chunks = chunk_text(text, TokenManager(tokenizer=SimpleTokenizer(), target_tokens=100, max_tokens=300, min_tokens=50))
+
+    assert len(chunks) == 2

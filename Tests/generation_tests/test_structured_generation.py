@@ -11,8 +11,15 @@ def test_format_context_basic():
         {"citation": "file1#chunk2", "text": "They sleep a lot."}
     ]
 
-    expected = "[file1#chunk1]\nCats are mammals.\n\n[file1#chunk2]\nThey sleep a lot."
+    expected = (
+        "[Source: file1#chunk1]\n"
+        "Content: Cats are mammals.\n\n"
+        "[Source: file1#chunk2]\n"
+        "Content: They sleep a lot."
+    )
+
     result = _format_context(chunks)
+
     assert result == expected
 
 def test_format_context_empty():
@@ -21,6 +28,7 @@ def test_format_context_empty():
 
 def test_generate_structured_response_success():
     chunks = [{"citation": "file.pdf#chunk1", "text": "Cats produce dander."}]
+    question = "What are the risks of having cats?"
     fake_llm = MagicMock()
     fake_llm.generate.return_value = """
     {
@@ -31,7 +39,7 @@ def test_generate_structured_response_success():
     }
     """
 
-    response: StructuredResponse = generate_structured_response(chunks, fake_llm)
+    response: StructuredResponse = generate_structured_response(chunks, fake_llm, question)
 
     assert response.summary == "Cats are mammals"
     assert response.risks[0].description == "Allergy"
@@ -39,20 +47,22 @@ def test_generate_structured_response_success():
 
 def test_generate_structured_response_invalid_json():
     chunks = [{"citation": "file.pdf#chunk1", "text": "Cats produce dander."}]
+    question = "What are the risks of having cats?"
     fake_llm = MagicMock()
 
     fake_llm.generate.return_value = "Not JSON"
 
     
     with pytest.raises(ValueError):
-        generate_structured_response(chunks, fake_llm)
+        generate_structured_response(chunks, fake_llm, question)
 
 def test_generate_structured_response_invalid_schema():
     chunks = [{"citation": "file.pdf#chunk1", "text": "Cats produce dander."}]
+    question = "What are the risks of having cats?"
     fake_llm = MagicMock()
 
     # Missing required fields
     fake_llm.generate.return_value = '{"summary": "Cats are mammals"}'
 
     with pytest.raises(ValueError):
-        generate_structured_response(chunks, fake_llm)
+        generate_structured_response(chunks, fake_llm, question)
