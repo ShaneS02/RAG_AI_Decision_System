@@ -52,3 +52,9 @@ def test_analyze_response_schema():
         "confidence_score",
         "confidence_reasoning",
     }
+
+#to be moved 
+def test_upload_invalid_data():
+    response = client.post("/uploadFile")
+
+    assert response.status_code == 422
